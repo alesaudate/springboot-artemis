@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.6</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>br.com.alesaudate.samples</groupId>
+    <artifactId>artemis-springboot</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>artemis-springboot</name>
+    <description>Demo project for Spring Boot</description>
+    <properties>
+        <java.version>17</java.version>
+        <activemq.basedir>${project.basedir}/apache-artemis-2.19.1</activemq.basedir>
+        <udp-address>231.7.7.7</udp-address>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>artemis-cli</artifactId>
+            <version>${artemis.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>artemis-maven-plugin</artifactId>
+                <version>${artemis.version}</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <id>create0</id>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                        <configuration>
+                            <javaOptions>-Djava.net.preferIPv4Stack=true</javaOptions>
+                            <instance>${project.build.directory}/server0</instance>
+                            <configuration>${project.build.outputDirectory}/activemq/server0</configuration>
+                            <javaOptions>-Dudp-address=${udp-address}</javaOptions>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <phase>package</phase>
+                        <id>create1</id>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                        <configuration>
+                            <javaOptions>-Djava.net.preferIPv4Stack=true</javaOptions>
+                            <instance>${project.build.directory}/server1</instance>
+                            <configuration>${project.build.outputDirectory}/activemq/server1</configuration>
+                            <javaOptions>-Dudp-address=${udp-address}</javaOptions>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <phase>package</phase>
+                        <id>create2</id>
+                        <goals>
+                            <goal>create</goal>
+                        </goals>
+                        <configuration>
+                            <instance>${project.build.directory}/server2</instance>
+                            <configuration>${project.build.outputDirectory}/activemq/server2</configuration>
+                            <javaOptions>-Dudp-address=${udp-address}</javaOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
