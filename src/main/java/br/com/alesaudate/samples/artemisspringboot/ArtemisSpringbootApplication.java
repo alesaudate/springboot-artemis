@@ -26,6 +26,8 @@ public class ArtemisSpringbootApplication {
             publisher.publishMessage(i);
         }
 
+        server0.getBean(Consumer.class).consumeAndAcknowledgeMessage();
+
     }
 
     private static ConfigurableApplicationContext startApp(String profile) {

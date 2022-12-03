@@ -1,5 +1,6 @@
 package br.com.alesaudate.samples.artemisspringboot;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
+import javax.jms.MessageConsumer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -22,7 +24,24 @@ public class Consumer {
 
     private AtomicInteger processedMessages = new AtomicInteger(0);
 
-    @JmsListener(destination = "${example.queue}", containerFactory = "primaryListenerJmsContainerFactory")
+    @Autowired
+    private MessageConsumer messageConsumer;
+
+
+    public void consumeAndAcknowledgeMessage() {
+        try {
+            Message message = messageConsumer.receive();
+            TextMessage textMessage = (TextMessage) message;
+            String text = textMessage.getText();
+            System.out.println(getServerName() + " got message: " + text + " . Redelivered? " + message.getJMSRedelivered());
+            message.acknowledge();
+        } catch (JMSException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+   /* @JmsListener(destination = "${example.queue}", containerFactory = "primaryListenerJmsContainerFactory")
     public void receiveMessage(Message message, Session session) throws JMSException, InterruptedException {
         TextMessage textMessage = (TextMessage) message;
         String text = textMessage.getText();
@@ -37,7 +56,7 @@ public class Consumer {
         if (processed >= 5) {
             throw new RuntimeException(text + " : not processed on server " + getServerName());
         }
-    }
+    }*/
 
 
     private String getServerName() {
