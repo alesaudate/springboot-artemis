@@ -17,19 +17,16 @@ public class ArtemisMasterConfig {
 
     @Bean(initMethod = "start", destroyMethod = "stop")
     @Primary
-    @Qualifier("server0")
     public ArtemisServer server0() {
         return new ArtemisServer("server0");
     }
 
     @Bean(initMethod = "start", destroyMethod = "stop")
-    @Qualifier("server0")
     public ArtemisServer server1() {
         return new ArtemisServer("server1");
     }
 
     @Bean(initMethod = "start", destroyMethod = "stop")
-    @Qualifier("server0")
     public ArtemisServer server2() {
         return new ArtemisServer("server2");
     }
