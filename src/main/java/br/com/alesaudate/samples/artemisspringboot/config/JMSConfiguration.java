@@ -17,13 +17,13 @@ import java.util.Hashtable;
 public class JMSConfiguration {
 
 
-    @Value("${example.queue}")
+    @Value("${jms.queue}")
     private String exampleQueueName;
 
-    @Value("${jndi.url}")
+    @Value("${jms.jndi.url}")
     private String jndiUrl;
 
-    @Value("${jndi.connectionFactory}")
+    @Value("${jms.connectionFactory}")
     private String connectionFactory;
 
     @Bean
