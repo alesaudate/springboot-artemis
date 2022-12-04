@@ -27,14 +27,38 @@ public class Consumer {
     @Autowired
     private MessageConsumer messageConsumer;
 
+    private Message latestMessage;
+
 
     public void consumeAndAcknowledgeMessage() {
+        try {
+            Message message = consumeMessage();
+            message.acknowledge();
+        } catch (JMSException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void acknowledgeLatestMessage() {
+        if (latestMessage != null) {
+            try {
+                latestMessage.acknowledge();
+                latestMessage = null;
+            } catch (JMSException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+
+    public Message consumeMessage() {
         try {
             Message message = messageConsumer.receive();
             TextMessage textMessage = (TextMessage) message;
             String text = textMessage.getText();
             System.out.println(getServerName() + " got message: " + text + " . Redelivered? " + message.getJMSRedelivered());
-            message.acknowledge();
+            latestMessage = message;
+            return message;
         } catch (JMSException e) {
             throw new RuntimeException(e);
         }
