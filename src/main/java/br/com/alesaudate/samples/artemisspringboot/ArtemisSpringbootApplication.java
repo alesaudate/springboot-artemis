@@ -14,19 +14,18 @@ public class ArtemisSpringbootApplication {
 
     public static void main(String[] args) throws Exception {
 
-        ConfigurableApplicationContext server = startApp("server");
-        ConfigurableApplicationContext client = startApp("client");
+        ConfigurableApplicationContext context = SpringApplication.run(ArtemisSpringbootApplication.class, args);
 
         // Wait until everything is setup
         Thread.sleep(5000);
-        Publisher publisher = client.getBean(Publisher.class);
+        Publisher publisher = context.getBean(Publisher.class);
 
         // Step 7
         for (int i = 0; i < NUM_MESSAGES; i++) {
             publisher.publishMessage(i);
         }
 
-        Consumer consumer = server.getBean(Consumer.class);
+        Consumer consumer = context.getBean(Consumer.class);
 
         // Step 8
         for (int i = 0; i < NUM_MESSAGES / 3; i++) {
@@ -39,7 +38,7 @@ public class ArtemisSpringbootApplication {
         }
 
         // Step 10
-        server.getBean("server0", ArtemisServer.class).stop();
+        context.getBean("server0", ArtemisServer.class).stop();
         Thread.sleep(5000);
 
         // Step 11
@@ -56,13 +55,7 @@ public class ArtemisSpringbootApplication {
         }
 
         // Step 13
-        client.stop();
-        server.stop();
+        context.stop();
 
     }
-
-    private static ConfigurableApplicationContext startApp(String profile) {
-        return SpringApplication.run(ArtemisSpringbootApplication.class, new String[]{"--spring.profiles.active=" + profile, "--example.queue=exampleQueue"});
-    }
-
 }

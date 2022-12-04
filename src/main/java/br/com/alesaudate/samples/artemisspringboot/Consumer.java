@@ -1,7 +1,6 @@
 package br.com.alesaudate.samples.artemisspringboot;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import javax.jms.JMSException;
@@ -10,7 +9,6 @@ import javax.jms.MessageConsumer;
 import javax.jms.TextMessage;
 
 @Component
-@Profile("!client")
 public class Consumer {
 
 
