@@ -41,17 +41,4 @@ public class JMSConfiguration {
     public Queue exampleQueue(Context context) throws NamingException, InterruptedException {
         return new ActiveMQQueue(exampleQueueName);
     }
-
-
-    @Bean
-    public DefaultJmsListenerContainerFactory primaryListenerJmsContainerFactory(DefaultJmsListenerContainerFactory
-                                                                                         defaultJmsListenerContainerFactory) {
-        defaultJmsListenerContainerFactory.setErrorHandler(new ErrorHandler() {
-            @Override
-            public void handleError(Throwable t) {
-                //System.err.println(t.getMessage());
-            }
-        });
-        return defaultJmsListenerContainerFactory;
-    }
 }

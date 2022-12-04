@@ -18,11 +18,6 @@ import javax.jms.Session;
 @Profile("!client")
 public class ArtemisMasterConfig {
 
-
-    @Value("${spring.profiles.active}")
-    private String[] activeProfiles;
-
-
     @Bean(initMethod = "start", destroyMethod = "stop")
     @Primary
     @Qualifier("server0")

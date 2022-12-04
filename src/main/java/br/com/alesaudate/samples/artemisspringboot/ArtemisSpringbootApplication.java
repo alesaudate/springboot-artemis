@@ -55,6 +55,10 @@ public class ArtemisSpringbootApplication {
             consumer.consumeAndAcknowledgeMessage();
         }
 
+        // Step 13
+        client.stop();
+        server.stop();
+
     }
 
     private static ConfigurableApplicationContext startApp(String profile) {
