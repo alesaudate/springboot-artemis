@@ -17,21 +17,26 @@ import java.util.Hashtable;
 public class JMSConfiguration {
 
 
-    @Value("${example.queue}")
+    @Value("${jms.queue}")
     private String exampleQueueName;
+
+    @Value("${jms.jndi.url}")
+    private String jndiUrl;
+
+    @Value("${jms.connectionFactory}")
+    private String connectionFactory;
 
     @Bean
     public Context getJNDIContext() throws NamingException {
         ActiveMQInitialContextFactory initialContextFactory = new ActiveMQInitialContextFactory();
         Hashtable<String, String> properties = new Hashtable<>();
-        properties.put(Context.PROVIDER_URL, "tcp://localhost:61616?ha=true&retryInterval=1000&retryIntervalMultiplier=1.0&reconnectAttempts=-1");
-
+        properties.put(Context.PROVIDER_URL, jndiUrl);
         return initialContextFactory.getInitialContext(properties);
     }
 
     @Bean
     public ConnectionFactory connectionFactory(Context context) throws NamingException {
-        return (ConnectionFactory) context.lookup("ConnectionFactory");
+        return (ConnectionFactory) context.lookup(connectionFactory);
     }
 
     @Bean
